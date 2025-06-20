@@ -1,30 +1,307 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DTM News</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Frost Ink</title>
+    <style>
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray: #1a1a1a;
+            --light-gray: #333333;
+            --accent: #ffffff;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: var(--black);
+            color: var(--white);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            border-bottom: 1px solid var(--white);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            animation: flicker 3s infinite alternate;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-top: 10px;
+        }
+        
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .product {
+            background-color: var(--gray);
+            border: 1px solid var(--white);
+            padding: 25px;
+            position: relative;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+        }
+        
+        .product::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%);
+            pointer-events: none;
+        }
+        
+        .product-name {
+            font-size: 1.8rem;
+            margin-top: 0;
+            border-bottom: 1px solid var(--white);
+            padding-bottom: 10px;
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        
+        .product-description {
+            opacity: 0.9;
+            margin-bottom: 25px;
+        }
+        
+        .product-volume {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: var(--black);
+            padding: 5px 10px;
+            font-size: 0.9rem;
+            border: 1px solid var(--white);
+        }
+        
+        .buy-btn {
+            display: inline-block;
+            background-color: transparent;
+            color: var(--white);
+            border: 1px solid var(--white);
+            padding: 10px 25px;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .buy-btn:hover {
+            background-color: var(--white);
+            color: var(--black);
+        }
+        
+        .buy-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.5s ease;
+        }
+        
+        .buy-btn:hover::before {
+            left: 100%;
+        }
+        
+        .warning {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: var(--light-gray);
+            border-left: 3px solid var(--white);
+            font-size: 0.9rem;
+        }
+        
+        footer {
+            margin-top: 80px;
+            border-top: 1px solid var(--white);
+            padding-top: 20px;
+            text-align: center;
+            opacity: 0.7;
+            font-size: 0.8rem;
+        }
+        
+        .glitch {
+            position: relative;
+        }
+        
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+        }
+        
+        .glitch::before {
+            color: #0ff;
+            z-index: -1;
+            animation: glitch-effect 3s infinite;
+        }
+        
+        .glitch::after {
+            color: #f0f;
+            z-index: -2;
+            animation: glitch-effect 2s infinite reverse;
+        }
+        
+        @keyframes glitch-effect {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
+        }
+        
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                opacity: 1;
+            }
+            20%, 22%, 24%, 55% {
+                opacity: 0.6;
+            }
+        }
+        
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0) 0%,
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.2) 51%,
+                rgba(0,0,0,0) 52%,
+                rgba(0,0,0,0) 100%
+            );
+            background-size: 100% 5px;
+            pointer-events: none;
+            z-index: 1000;
+            animation: scanline 8s linear infinite;
+        }
+        
+        @keyframes scanline {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100%; }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>NNA News</h1>
-    </header>
-
-    <main>
-        <article>
-            <h2>Roblox - слухи о закрытии в 2025</h2>
-            <p>В последнее время в интернете ходят слухи, что популярная многопользовательская платформа Roblox могут скоро быть закрыта. Многие пользователи беспокоятся о судьбе любимых игр и аксессуаров на платформе. Однако стоит заметить, что никаких официальных подтверждений от компании Roblox о закрытии пока не было. Официальные лица компании пока не комментируют эту информацию. Следите за новостями, чтобы получить самую актуальную информацию о судьбе Roblox.</p>
-        </article>
-    </main>
-
-    <footer>
-        <div class="user-stats">
-            <p>Всего пользователей: <span id="totalUsers">0</span></p>
+    <div class="scanlines"></div>
+    
+    <div class="container">
+        <header>
+            <h1 class="logo glitch" data-text="Frost Ink">Frost Ink</h1>
+            <p class="tagline"></p>
+        </header>
+        
+        <div class="products">
+            <div class="product">
+                <span class="product-volume">100мл</span>
+                <h2 class="product-name">Hard Standard</h2>
+                <div class="product-description">
+                    <p>100% концентрация плавиковой кислоты для перманентной гравировки на стекле. Несколько цветов на выбор для создания уникальных дизайнов.</p>
+                    <p>Оставляет четкие, нестираемые следы.</p>
+                </div>
+                <div class="product-price">400 руб.</div>
+                <a href="https://example.com/buy-hard-standard" class="buy-btn">Купить сейчас</a>
+            </div>
+            
+            <div class="product">
+                <span class="product-volume">100мл</span>
+                <h2 class="product-name">Hard Plus</h2>
+                <div class="product-description">
+                    <p>100% концентрация плавиковой кислоты с добавлением соляной кислоты для более агрессивного воздействия.</p>
+                    <p>Обеспечивает более глубокую гравировку за меньшее время.</p>
+                </div>
+                <div class="product-price">600 руб.</div>
+                <a href="https://example.com/buy-hard-plus" class="buy-btn">Купить сейчас</a>
+            </div>
         </div>
-        <p>&copy; 2021 NNA News</p>
-    </footer>
-
-    <script src="script.js"></script>
+        
+        <div class="warning">
+            <h3>Предупреждение</h3>
+            <p>Плавиковая кислота чрезвычайно опасна. Используйте только в хорошо проветриваемых помещениях в перчатках и респираторе. Не допускайте контакта с кожей, глазами или слизистыми оболочками. Храните в недоступном для детей и животных месте. При попадании на кожу промойте большим количеством воды или заранее приготовленным содовым раствором.</p>
+        </div>
+        
+        <footer>
+            <p>© 2025 Frost Ink</p>
+            <p></p>
+        </footer>
+    </div>
+    
+    <script>
+        // Добавляем эффект мерцания для логотипа
+        const logo = document.querySelector('.logo');
+        setInterval(() => {
+            const random = Math.random();
+            if (random > 0.9) {
+                logo.style.animation = 'none';
+                setTimeout(() => {
+                    logo.style.animation = 'flicker 3s infinite alternate';
+                }, 100);
+            }
+        }, 3000);
+        
+        // Эффект при наведении на товары
+        const products = document.querySelectorAll('.product');
+        products.forEach(product => {
+            product.addEventListener('mousemove', (e) => {
+                const x = e.clientX - product.getBoundingClientRect().left;
+                const y = e.clientY - product.getBoundingClientRect().top;
+                
+                product.style.setProperty('--x', `${x}px`);
+                product.style.setProperty('--y', `${y}px`);
+            });
+        });
+    </script>
 </body>
-</html>
+                    </html>
